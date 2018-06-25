@@ -1,30 +1,29 @@
 $(document).ready(function() {
 
-    // Use jQuery to get a reference to `load-songs`
+
 const loadSongs = $("#load-songs")
-    // Use jQuery to get a reference to `song-list`
+
 const songList = $("#song-list")
 
-    /*
-        atach a click handler to the button with jQuery. When
-        the button is clicked, use $.ajax() to load `songs.json`
-        from the file system
-    */
-    $("#load-songs").click(() => {
-        
-    }
-    /*
-        Chain a `.then()` method to the ajax call, and when
-        it is complete build a DOM component for each song with
-        the following structure. Use the jQuery append() method
-        to put an HTML representation of each song the DOM as a
-        child component of the .
+loadSongs.click(() => { 
+    $.ajax("songs.json") 
+        .then(responseFromSongsJS => {
+            for (let i in responseFromSongsJS) {
+                responseFromSongsJS[i].forEach(song => {
+                    let songBee = $("<section>");
+                    songBee.attr("class", "song");
+                    let head = $("<h1>");
+                    head.attr("class", "song_title");
+                    head.text(`${song.title}`);
+                    let songWhat = $("<section>");
+                    songWhat.attr("class", "song_description");
+                    songWhat.text(`Performed by ${song.artist} on the album ${song.album}`);
+                    head.appendTo(songBee);
+                    songWhat.appendTo(songBee);
+                    songBee.appendTo(songList);
+                });
+            }
+        })
+});
 
-            <section class="song">
-                <h1 class="song__title">{Title of song}</h1>
-                <section class="song__description">
-                    Performed by {artist} on the album {album}
-                </section>
-            </section>
-    */
-})
+});
